@@ -6,7 +6,7 @@ const int pbOFFpin = 52;
 const int redLEDpin = 25;
 const int greenLEDpin = 27;
 const int blueLEDpin = 29;
-const int motorPin = 5;
+//const int motorPin = 5;
 
 // Object is motor from motor driver library
 DualG2HighPowerMotorShield24v18 md;
@@ -16,6 +16,14 @@ const String green = "green";
 const String blue = "blue";
 const String red = "red";
 const String white = "white";
+
+const int sensorPin = A15;
+float sensorValue;
+float voltageOut;
+
+float temperatureC;
+float temperatureF;
+float temperatureK;
 
 // Variables to be used by program
 int tempFlag = 0;
@@ -29,9 +37,10 @@ void setup() {
   pinMode(blueLEDpin, OUTPUT);
   pinMode(pbONpin, INPUT);
   pinMode(pbOFFpin, INPUT);
+  pinMode(sensorPin, INPUT);
    
-  // md.init();
-  // md.calibrateCurrentOffsets();
+   md.init();
+   md.calibrateCurrentOffsets();
 }
 void loop() {
   
@@ -68,16 +77,16 @@ void pbOnWait() {
 // ================================================================================
 void runMotor() {
   
-  //md.setM1Speed(4800);
-  //md.enableM1Driver();
+  md.setM1Speed(4800);
+  md.enableM1Driver();
   setLED(blue, HIGH);
   while((digitalRead(pbOFFpin) == LOW)) {
-    //tempCheck();
+    tempCheck();
     //movementCheck();
     // INSERT CODE FOR MOTOR OPERATION
    
   }
-  //md.disableM1Driver();
+  md.disableM1Driver();
 }
 
 // This function checks the temperature of the device
@@ -87,15 +96,33 @@ void runMotor() {
 // Step 3: Set tempFlag to 1 if temperature is too high, 0 if okay
 // Step 4: Make LED red if temperature is too high, Make LED off if temperature is okay
 // ====================================================================================
+// R1 = 2K Pullup
+// LM335z (100C cap)
+// V- = GND
+// Vout = A15
 void tempCheck() {
-  // INSERT CODE FOR TEMPERATURE SENSOR READING
+  sensorValue = analogRead(sensorPin);
+  voltageOut = (sensorValue * 5000) / 1024;
   
-  if (tempFlag == 1) {
+  temperatureK = voltageOut / 10;
+  temperatureC = temperatureK - 273;
+  temperatureF = (temperatureC * 1.8) + 32;
+  /*Serial.print("Temperature(ºC): ");
+  Serial.print(temperatureC);
+  Serial.print("  Temperature(ºF): ");
+  Serial.print(temperatureF);
+  Serial.print("  Voltage(mV): ");
+  Serial.println(voltageOut);
+  delay(1000);*/
+  if (temperatureF > 90 && tempFlag == 0) { // WIll set temperature threshold accordingly once device is operational
     setLED(red, HIGH);
+    tempFlag = 1;
   }
-  else if(digitalRead(redLEDpin) == HIGH) {
+  else if (tempFlag == 1 && temperatureF <= 90) {
     setLED(red, LOW);
+    tempFlag = 0;
   }
+
 }
 
 // This function checks the piston for correct movement
