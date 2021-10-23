@@ -1,0 +1,66 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# Temperature-Sensor-rescue_GND-power
+#
+DEF Temperature-Sensor-rescue_GND-power #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -250 50 H I C CNN
+F1 "Temperature-Sensor-rescue_GND-power" 0 -150 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 6 0 1 0 0 0 0 -50 50 -50 0 -100 -50 -50 0 -50 N
+X GND 1 0 0 0 D 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# Temperature-Sensor-rescue_LM35-NEB-Sensor_Temperature
+#
+DEF Temperature-Sensor-rescue_LM35-NEB-Sensor_Temperature U 0 40 Y Y 1 F N
+F0 "U" -250 250 50 H V C CNN
+F1 "Temperature-Sensor-rescue_LM35-NEB-Sensor_Temperature" 50 250 50 H V L CNN
+F2 "" 50 -250 50 H I L CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ TO?220*
+$ENDFPLIST
+DRAW
+A -175 125 25 1 1799 0 1 10 N -150 125 -200 125
+C -175 -100 50 0 1 10 F
+S -300 200 300 -200 0 1 10 f
+S -150 -75 -200 0 0 1 10 F
+P 2 0 1 10 -200 25 -175 25 N
+P 2 0 1 10 -200 50 -175 50 N
+P 2 0 1 10 -200 75 -175 75 N
+P 2 0 1 10 -200 100 -175 100 N
+P 2 0 1 10 -200 125 -200 0 N
+P 2 0 1 10 -200 125 -175 125 N
+P 2 0 1 10 -150 125 -150 0 N
+X +VS 1 0 300 100 D 50 50 1 1 W
+X GND 2 0 -300 100 U 50 50 1 1 W
+X Vout 3 400 0 100 L 50 50 1 1 O
+ENDDRAW
+ENDDEF
+#
+# Temperature-Sensor-rescue_R_US-Device
+#
+DEF Temperature-Sensor-rescue_R_US-Device R 0 0 N Y 1 F N
+F0 "R" 100 0 50 V V C CNN
+F1 "Temperature-Sensor-rescue_R_US-Device" -100 0 50 V V C CNN
+F2 "" 40 -10 50 V I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ R_*
+$ENDFPLIST
+DRAW
+P 2 0 1 0 0 -90 0 -100 N
+P 2 0 1 0 0 90 0 100 N
+P 5 0 1 0 0 -30 40 -45 0 -60 -40 -75 0 -90 N
+P 5 0 1 0 0 30 40 15 0 0 -40 -15 0 -30 N
+P 5 0 1 0 0 90 40 75 0 60 -40 45 0 30 N
+X ~ 1 0 150 50 D 50 50 1 1 P
+X ~ 2 0 -150 50 U 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+#End Library

@@ -31,7 +31,10 @@ int movementFlag = 0;
 
 void setup() {
   Serial.begin(115200);
-  
+  TCCR2B = TCCR2B & B11111000 | B00000001;
+  TCCR1A = 0b10100000;
+  TCCR1B = 0b00010001;
+  ICR1 = 400;
   pinMode(redLEDpin, OUTPUT);
   pinMode(greenLEDpin, OUTPUT);
   pinMode(blueLEDpin, OUTPUT);
@@ -76,14 +79,37 @@ void pbOnWait() {
 // Step 4: After OFF button is pressed by the user, turn off the motor
 // ================================================================================
 void runMotor() {
-  
-  md.setM1Speed(4800);
+
   md.enableM1Driver();
+
+  md.setM1Speed(-220);
+  delay(2000);
+  md.setM1Speed(-240);
+  delay(2000);
+  md.setM1Speed(-260);
+  delay(2000);
+  md.setM1Speed(-280);
+  delay(2000);
+  md.setM1Speed(-300);
+  delay(2000);
+  md.setM1Speed(-320);
+  delay(2000);
+  md.setM1Speed(-340);
+  delay(2000);
+  md.setM1Speed(-360);
+  delay(2000);
+  md.setM1Speed(-380);
+  delay(2000);
+  md.setM1Speed(-400);
+  
+  
   setLED(blue, HIGH);
   while((digitalRead(pbOFFpin) == LOW)) {
     tempCheck();
     //movementCheck();
     // INSERT CODE FOR MOTOR OPERATION
+    Serial.print("\nCurrent: ");
+    Serial.print(md.getM1CurrentReading());
    
   }
   md.disableM1Driver();
