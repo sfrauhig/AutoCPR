@@ -64,6 +64,7 @@ void pbOnWait() {
   while(1) {
     pbState = digitalRead(pbONpin);
     if (pbState == HIGH) {
+      setLED(green, LOW);
       return;
     }
   }
@@ -82,25 +83,25 @@ void runMotor() {
 
   md.enableM1Driver();
 
-  md.setM1Speed(-220);
+  md.setM1Speed(220);
   delay(2000);
-  md.setM1Speed(-240);
+  md.setM1Speed(240);
   delay(2000);
-  md.setM1Speed(-260);
+  md.setM1Speed(260);
   delay(2000);
-  md.setM1Speed(-280);
+  md.setM1Speed(280);
   delay(2000);
-  md.setM1Speed(-300);
+  md.setM1Speed(300);
   delay(2000);
-  md.setM1Speed(-320);
+  md.setM1Speed(320);
   delay(2000);
-  md.setM1Speed(-340);
+  md.setM1Speed(340);
   delay(2000);
-  md.setM1Speed(-360);
+  md.setM1Speed(360);
   delay(2000);
-  md.setM1Speed(-380);
+  md.setM1Speed(380);
   delay(2000);
-  md.setM1Speed(-400);
+  md.setM1Speed(400);
   
   
   setLED(blue, HIGH);
