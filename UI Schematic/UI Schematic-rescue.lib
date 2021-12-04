@@ -1,11 +1,11 @@
 EESchema-LIBRARY Version 2.4
 #encoding utf-8
 #
-# +5V-power
+# +5V-power-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue
 #
-DEF +5V-power #PWR 0 0 Y Y 1 F P
+DEF +5V-power-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue #PWR 0 0 Y Y 1 F P
 F0 "#PWR" 0 -150 50 H I C CNN
-F1 "+5V-power" 0 140 50 H V C CNN
+F1 "+5V-power-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue" 0 140 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
@@ -16,11 +16,11 @@ X +5V 1 0 0 0 U 50 50 1 1 W N
 ENDDRAW
 ENDDEF
 #
-# GND-power
+# GND-power-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue
 #
-DEF GND-power #PWR 0 0 Y Y 1 F P
+DEF GND-power-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue #PWR 0 0 Y Y 1 F P
 F0 "#PWR" 0 -250 50 H I C CNN
-F1 "GND-power" 0 -150 50 H V C CNN
+F1 "GND-power-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue" 0 -150 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
@@ -29,11 +29,11 @@ X GND 1 0 0 0 D 50 50 1 1 W N
 ENDDRAW
 ENDDEF
 #
-# LED_RAGB-Device
+# LED_RAGB-Device-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue
 #
-DEF LED_RAGB-Device D 0 0 Y N 1 F N
+DEF LED_RAGB-Device-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue D 0 0 Y N 1 F N
 F0 "D" 0 370 50 H V C CNN
-F1 "LED_RAGB-Device" 0 -350 50 H V C CNN
+F1 "LED_RAGB-Device-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue" 0 -350 50 H V C CNN
 F2 "" 0 -50 50 H I C CNN
 F3 "" 0 -50 50 H I C CNN
 $FPLIST
@@ -81,11 +81,11 @@ X BK 4 -200 -200 100 R 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# R_US-Device
+# R_US-Device-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue
 #
-DEF R_US-Device R 0 0 N Y 1 F N
+DEF R_US-Device-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue R 0 0 N Y 1 F N
 F0 "R" 100 0 50 V V C CNN
-F1 "R_US-Device" -100 0 50 V V C CNN
+F1 "R_US-Device-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue" -100 0 50 V V C CNN
 F2 "" 40 -10 50 V I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -102,11 +102,11 @@ X ~ 2 0 -150 50 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# SW_Push-Switch
+# SW_Push-Switch-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue
 #
-DEF SW_Push-Switch SW 0 40 N N 1 F N
+DEF SW_Push-Switch-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue SW 0 40 N N 1 F N
 F0 "SW" 50 100 50 H V L CNN
-F1 "SW_Push-Switch" 0 -60 50 H V C CNN
+F1 "SW_Push-Switch-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue-UI-Schematic-rescue" 0 -60 50 H V C CNN
 F2 "" 0 200 50 H I C CNN
 F3 "" 0 200 50 H I C CNN
 DRAW
