@@ -1,3 +1,0 @@
-(sym_lib_table
-  (lib (name Temperature-Sensor-rescue)(type Legacy)(uri "${KIPRJMOD}/Temperature Sensor-rescue.lib")(options "")(descr ""))
-)
