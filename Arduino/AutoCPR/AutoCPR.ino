@@ -1,12 +1,17 @@
 #include "DualG2HighPowerMotorShield.h"
 
-// Constants are pin numbers for connections with Arduino
-const int pbONpin = 23;
-const int pbOFFpin = 52;
-const int redLEDpin = 25;
-const int greenLEDpin = 27;
-const int blueLEDpin = 29;
-//const int motorPin = 5;
+// Constants are pin numbers for connections with Arduino to UI
+const int pbONpin = 23;     // orange
+const int pbOFFpin = 52;    // purple
+const int redLEDpin = 25;   // yellow
+const int greenLEDpin = 27; // green
+const int blueLEDpin = 29;  // blue
+                            // 5V is brown
+                            // GND is red
+                            // Grey is disconnected.
+const int tempPin = A15;    // Connections to LM35dz - A15 red; black is GND and white is 5V
+const int movePin = 3;       // Connections to hall effect(s)
+
 
 // Object is motor from motor driver library
 DualG2HighPowerMotorShield24v18 md;
@@ -17,36 +22,43 @@ const String blue = "blue";
 const String red = "red";
 const String white = "white";
 
-const int sensorPin = A15;
-float sensorValue;
-float voltageOut;
 
-float temperatureC;
-float temperatureF;
-float temperatureK;
 
 // Variables to be used by program
 int tempFlag = 0;
-int movementFlag = 0;
+int moveFlag = 0;
+float sensorValue;
+float voltageOut;
+float temperatureC;
+volatile unsigned long time1, time2 = 0;
+volatile float freq[5] = {0};
+volatile float freqAvg;
+volatile int i = 0;
+int j = 0;
 
 void setup() {
   Serial.begin(115200);
+  
   TCCR2B = TCCR2B & B11111000 | B00000001;
   TCCR1A = 0b10100000;
   TCCR1B = 0b00010001;
   ICR1 = 400;
+  attachInterrupt(digitalPinToInterrupt(movePin), getTimeISR, FALLING);
+  
+  tempFlag = 0;
+  moveFlag = 0;
+  pinMode(movePin, INPUT_PULLUP);
   pinMode(redLEDpin, OUTPUT);
   pinMode(greenLEDpin, OUTPUT);
   pinMode(blueLEDpin, OUTPUT);
   pinMode(pbONpin, INPUT);
   pinMode(pbOFFpin, INPUT);
-  pinMode(sensorPin, INPUT);
-   
-   md.init();
-   md.calibrateCurrentOffsets();
+  pinMode(tempPin, INPUT);
+  
+  md.init();
+  md.calibrateCurrentOffsets();
 }
 void loop() {
-  
   pbOnWait();
   runMotor();
 }
@@ -81,39 +93,18 @@ void pbOnWait() {
 // ================================================================================
 void runMotor() {
 
-  md.enableM1Driver();
-
-  md.setM1Speed(220);
-  delay(2000);
-  md.setM1Speed(240);
-  delay(2000);
-  md.setM1Speed(260);
-  delay(2000);
-  md.setM1Speed(280);
-  delay(2000);
-  md.setM1Speed(300);
-  delay(2000);
-  md.setM1Speed(320);
-  delay(2000);
-  md.setM1Speed(340);
-  delay(2000);
-  md.setM1Speed(360);
-  delay(2000);
-  md.setM1Speed(380);
-  delay(2000);
-  md.setM1Speed(400);
-  
-  
+  md.enableM2Driver();
+  md.setM2Speed(400);
   setLED(blue, HIGH);
+  
   while((digitalRead(pbOFFpin) == LOW)) {
     tempCheck();
-    //movementCheck();
-    // INSERT CODE FOR MOTOR OPERATION
-    Serial.print("\nCurrent: ");
-    Serial.print(md.getM1CurrentReading());
+    //Serial.print("\nCurrent: ");
+    //Serial.print(md.getM2CurrentReading());
    
   }
-  md.disableM1Driver();
+  setLED(blue, LOW);
+  md.disableM2Driver();
 }
 
 // This function checks the temperature of the device
@@ -123,51 +114,28 @@ void runMotor() {
 // Step 3: Set tempFlag to 1 if temperature is too high, 0 if okay
 // Step 4: Make LED red if temperature is too high, Make LED off if temperature is okay
 // ====================================================================================
-// R1 = 2K Pullup
-// LM335z (100C cap)
+// LM35dz (150C cap)
 // V- = GND
 // Vout = A15
+// V+ = 5V
 void tempCheck() {
-  sensorValue = analogRead(sensorPin);
+  sensorValue = analogRead(tempPin);
+
   voltageOut = (sensorValue * 5000) / 1024;
   
-  temperatureK = voltageOut / 10;
-  temperatureC = temperatureK - 273;
-  temperatureF = (temperatureC * 1.8) + 32;
-  /*Serial.print("Temperature(ºC): ");
-  Serial.print(temperatureC);
-  Serial.print("  Temperature(ºF): ");
-  Serial.print(temperatureF);
-  Serial.print("  Voltage(mV): ");
-  Serial.println(voltageOut);
-  delay(1000);*/
-  if (temperatureF > 90 && tempFlag == 0) { // WIll set temperature threshold accordingly once device is operational
+  temperatureC = voltageOut / 10;
+
+  if (temperatureC > 65 && tempFlag == 0) { // Temp threshold based on operational temperature of Li-ion batter
     setLED(red, HIGH);
     tempFlag = 1;
   }
-  else if (tempFlag == 1 && temperatureF <= 90) {
+  else if (tempFlag == 1 && temperatureC <= 65) {
     setLED(red, LOW);
     tempFlag = 0;
   }
 
 }
 
-// This function checks the piston for correct movement
-// ====================================================================================
-// Step 1: Read the output of the movement sensor
-// Step 2: Set movementFlag to 1 if the movement is in error, Set to 0 if it's okay
-// Step 3: Make LED white if piston movement is off, Make LED off if piston movement is okay
-// ====================================================================================
-void movementCheck() {
-  //INSERT CODE FOR MOVEMENT SENSOR READING
- 
-  if (movementFlag == 1) {
-    setLED(white, HIGH);
-  }
-  else if(digitalRead(blueLEDpin) == HIGH) {
-    setLED(white, LOW);
-  }
-}
 
 // This function sets the User interface RGB LED to the proper 
 // color for device indications as denoted in the User Guide.
@@ -193,4 +161,57 @@ void setLED(String color, byte state) {
     digitalWrite(greenLEDpin, HIGH);
     digitalWrite(blueLEDpin, HIGH);
   }
+}
+void getTimeISR() {
+  
+  unsigned long int timex = micros();
+  if(time1 == 0){
+    time1 = timex;
+  }
+  else if(i < 5){
+    time2 = timex;
+    freq[i++] = 1000000.0/(float) (time2-time1);
+ 
+    CalcAvgFreq();
+    time1 = time2;
+  }
+  else {
+    time2 = timex;
+    i = 0;
+    freq[i++] = 1000000.0/(float) (time2-time1);
+    CalcAvgFreq();
+    time1 = time2;
+  }
+}
+// This function checks the piston for correct movement by calculating the average frequency
+// of the last 5 hall effect sensor readings.
+// ====================================================================================
+// Step 1: In ISR, get hall effect sensor readings
+// Step 2: Set movementFlag to 1 if the movement is in error, Set to 0 if it's okay
+// Step 3: Make LED white if piston movement is outside the margin of error
+//         Keep LED blue if piston movement is okay
+// ====================================================================================
+void CalcAvgFreq(){
+  j = 0;
+  freqAvg = 0;
+  while(j < 5 && freq[j] > 0) {
+    freqAvg += freq[j++];
+  }
+  freqAvg /= (j-1);
+
+  //=============================================================
+  // Test Number 5.4: Testing for proper compression rate.
+  // Uncomment for test: Serial.print(freqAvg);
+  // Uncomment for test: Serial.println(" Hz");
+  // freqAvg shall be between 1.66Hz and 2.33Hz (100BPM - 140BPM)
+  //=============================================================
+
+  if(moveFlag = 0 && (freqAvg <= 1.66 || freqAvg >= 2.33)) {
+    setLED(white, HIGH);
+    moveFlag = 1;
+  } else if(moveFlag = 1 && (freqAvg > 1.66 && freqAvg < 2.33)) {
+    setLED(white, LOW);
+    moveFlag = 0;
+  }
+  
 }
