@@ -10,7 +10,7 @@ const int blueLEDpin = 29;  // blue
                             // GND is red
                             // Grey is disconnected.
 const int tempPin = A15;    // Connections to LM35dz - A15 red; black is GND and white is 5V
-const int movePin = 3;       // Connections to hall effect(s)
+const int movePin = 3;       // Connections to hall effect(s) - 3 is Yellow; black is GND; red is 5V
 
 
 // Object is motor from motor driver library
@@ -124,13 +124,12 @@ void tempCheck() {
   voltageOut = (sensorValue * 5000) / 1024;
   
   temperatureC = voltageOut / 10;
-
   if (temperatureC > 65 && tempFlag == 0) { // Temp threshold based on operational temperature of Li-ion batter
     setLED(red, HIGH);
     tempFlag = 1;
   }
   else if (tempFlag == 1 && temperatureC <= 65) {
-    setLED(red, LOW);
+    setLED(blue, HIGH);
     tempFlag = 0;
   }
 
@@ -211,6 +210,7 @@ void CalcAvgFreq(){
     moveFlag = 1;
   } else if(moveFlag = 1 && (freqAvg > 1.66 && freqAvg < 2.33)) {
     setLED(white, LOW);
+    setLED(blue, HIGH);
     moveFlag = 0;
   }
   
