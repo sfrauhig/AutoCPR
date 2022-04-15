@@ -94,7 +94,7 @@ void pbOnWait() {
 void runMotor() {
 
   md.enableM2Driver();
-  md.setM2Speed(400);
+  md.setM2Speed(-400);
   setLED(blue, HIGH);
   
   while((digitalRead(pbOFFpin) == LOW)) {
